@@ -6,7 +6,6 @@ import org.python.core.PyFile;
 import org.python.core.PySystemState;
 import org.python.core.imp;
 import org.python.util.InteractiveConsole;
-import org.python.util.JLineConsole;
 
 /**
  * Created by thawes on 1/26/15.
@@ -58,7 +57,7 @@ public abstract class AbstractJythonInit {
                 // fall through
             }
         }
-        return new JLineConsole();
+        return new InteractiveConsole();
     }
 
 }

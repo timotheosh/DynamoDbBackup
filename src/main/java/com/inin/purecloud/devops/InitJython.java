@@ -22,24 +22,19 @@ public class InitJython extends AbstractJythonInit {
     }
 
     public void run() throws ScriptException {
-        System.out.print(args.length + " Arguments: ");
-        for (String s : args) {
-            System.out.print(s);
-            System.out.print(", ");
-        }
-        System.out.println();
-
         if (args.length > 0) {
             if (args[0].equals("eval"))
                 if (args.length > 1)
                     c.exec(args[1]);
                 else
-                    c.exec("try:\n import fibcalc\n fibcalc.main()\nexcept SystemExit: pass");
+                    c.execfile(InitJython.class.getResourceAsStream(
+                                    "/Lib/DynamoDbInfo/__init__.py"),
+                            "DynamoDbInfo/__init__.py");
             else if (args[0].equals("run"))
                 if (args.length > 1)
                     c.execfile(args[1]);
                 else {
-                    c.execfile(InitJython.class.getResourceAsStream("/Lib/fibcalc/__init__.py"), "fibcalc/__init__.py");
+                    c.execfile(InitJython.class.getResourceAsStream("/Lib/DynamoDbBackup/__init__.py"), "DynamoDbBackup/__init__.py");
                 }
             else if (args[0].equals("script")) {
                 String engineName = args[1];
@@ -63,10 +58,6 @@ public class InitJython extends AbstractJythonInit {
                         e.printStackTrace();
                     }
                 }
-            } else if (args[0].equals("dynamotest")) {
-                c.execfile(InitJython.class.getResourceAsStream(
-                        "/Lib/DynamoDbBackup/__init__.py"),
-                        "DynamoDbBackup/__init__.py");
             } else
                 System.out
                         .println("use either eval or run or script as first argument");

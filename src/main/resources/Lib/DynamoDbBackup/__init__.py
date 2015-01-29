@@ -1,4 +1,7 @@
 __author__ = 'thawes'
-import nose
-from sys import path
-print "PATH: %s" % path
+
+from DynamoDbInfo import DynamoDbInfo
+
+dyn = DynamoDbInfo()
+tl = dyn.getData()
+print dir(tl[0])
