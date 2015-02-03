@@ -36,6 +36,11 @@
       <artifactId>aws-java-sdk</artifactId>
       <version>1.9.16</version>
     </dependency>
+      <dependency>
+          <groupId>org.rythmengine</groupId>
+          <artifactId>rythm-engine</artifactId>
+          <version>1.0.1</version>
+      </dependency>
   </dependencies>
   <build>
     <resources>

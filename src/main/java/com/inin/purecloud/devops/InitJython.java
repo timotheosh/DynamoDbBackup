@@ -1,12 +1,15 @@
 package com.inin.purecloud.devops;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import jline.ConsoleReader;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import jline.ConsoleReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.util.Scanner;
+
 /**
  * Hello world!
  *
@@ -34,7 +37,7 @@ public class InitJython extends AbstractJythonInit {
                 if (args.length > 1)
                     c.execfile(args[1]);
                 else {
-                    c.execfile(InitJython.class.getResourceAsStream("/Lib/DynamoDbBackup/__init__.py"), "DynamoDbBackup/__init__.py");
+                    c.execfile(InitJython.class.getResourceAsStream("/Lib/__init__.py"), "__init__.py");
                 }
             else if (args[0].equals("script")) {
                 String engineName = args[1];
@@ -63,5 +66,10 @@ public class InitJython extends AbstractJythonInit {
                         .println("use either eval or run or script as first argument");
         } else
             c.interact();
+    }
+
+    public static String convertStreamToString(InputStream is) {
+        Scanner s = new Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
     }
 }
