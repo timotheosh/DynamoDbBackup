@@ -19,7 +19,7 @@
     <orderEntry type="library" name="Jython 2.7b3 (~/programs/share/jython2.7b3/bin/jython) interpreter library" level="application" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.8.2" level="project" />
     <orderEntry type="library" name="Maven: org.ini4j:ini4j:0.5.2" level="project" />
-    <orderEntry type="library" name="Maven: org.python:jython-standalone:2.7-b3" level="project" />
+    <orderEntry type="library" name="Maven: org.python:jython-standalone:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk:1.9.16" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-support:1.9.16" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-simpledb:1.9.16" level="project" />
