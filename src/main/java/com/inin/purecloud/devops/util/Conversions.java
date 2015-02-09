@@ -2,6 +2,10 @@ package com.inin.purecloud.devops.util;
 
 /**
  * Created by thawes on 2/4/15.
+ *
+ * This class provides a couple utility functions for Python to work with Java
+ * more seamlessly, and also an easy class to load to reference files (ala
+ * template files) within the jar file.
  */
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
