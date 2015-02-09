@@ -1,17 +1,24 @@
 __author__ = 'thawes'
 
+from re import compile
+
 DEBUG = True
 
 from DynamoDbBackup import DynamoDbBackup
 
-dyn = DynamoDbBackup(DEBUG)
+pattern = compile('WFM_*')
+s3BucketName = 'dev-inin-dynamodbbackup'
+table = 'ADevOpsTable'
 
-t1 = dyn.getData('ADevOpsTable')
+dyn = DynamoDbBackup(pattern, s3BucketName, DEBUG)
 
-dyn.tableData(t1[0])
+dyn.__readTableData__()
+# desc = dyn.descFromName(table)
 
-dyn.setReadThroughput(t1[0], 20)
+#dyn.printTableData(desc)
 
-dyn.generateHive()
+# dyn.setReadThroughput(desc, 20)
+
+# dyn.generateHive()
 
 dyn.close()

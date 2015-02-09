@@ -7,8 +7,6 @@ import javax.script.ScriptException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.InputStream;
-import java.util.Scanner;
 
 /**
  * Hello world!
@@ -66,10 +64,5 @@ public class InitJython extends AbstractJythonInit {
                         .println("use either eval or run or script as first argument");
         } else
             c.interact();
-    }
-
-    public static String convertStreamToString(InputStream is) {
-        Scanner s = new Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
     }
 }
