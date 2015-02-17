@@ -1,0 +1,48 @@
+{
+  "objects": [
+    {
+      "id": "Default",
+      "failureAndRerunMode": "cascade",
+      "logUri": "s3://dev-inin-dynamodbbackup/Logs/"
+    },
+    {
+      "name": "DynamoDbBackup Deployment",
+      "id": "dynamoDbBackup",
+      "type": "EmrActivity",
+      "runsOn": {
+        "ref": "transientCluster"
+      },
+      "schedule": {
+        "ref": "Immediate"
+      },
+      "step": [
+        "s3://us-east-1.elasticmapreduce/libs/script-runner/script-runner.jar,s3://us-east-1.elasticmapreduce/libs/hive/hive-script,--base-path,s3://us-east-1.elasticmapreduce/libs/hive,--hive-versions,latest,--run-hive-script,--args,-f,s3://dev-inin-dynamodbbackup/HiveScripts/dynamodb-backup.hive"
+      ]
+    },
+    {
+      "id": "transientCluster",
+      "type": "EmrCluster",
+      "keyPair": "dev.ops",
+      "retryDelay": "3 minutes",
+      "amiVersion": "3.3.2",
+      "masterInstanceType": "m1.medium",
+      "coreInstanceType": "m1.large",
+      "coreInstanceCount": "3",
+      "taskInstanceType": "m1.large",
+      "taskInstanceCount": "3",
+      "schedule": {
+        "ref": "Immediate"
+      },
+      "terminateAfter": "1 hour"
+    },
+    {
+      "id": "Immediate",
+      "type": "Schedule",
+      "startAt": "FIRST_ACTIVATION_DATE_TIME",
+      "startDateTime": "2015-02-10T00:00:01",
+      "endDateTime": "2040-12-31T00:00:01",
+      "period": "1 hour",
+      "occurrences": "3"
+    }
+  ]
+}

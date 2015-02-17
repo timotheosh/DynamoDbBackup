@@ -42,7 +42,7 @@ class HiveGeneration:
 
         for table in tables:
             params = {"tableName": table,
-                      "s3Bucket": "%s/Backups" % s3BucketName,
+                      "s3Bucket": s3BucketName,
                       "s3Path": s3path,
                       "readPercent": float(readPercent)}
             hscript.append(engine.render(template, params))

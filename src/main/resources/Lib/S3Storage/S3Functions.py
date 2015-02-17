@@ -9,6 +9,7 @@ from json import dumps, loads
 
 class S3Functions:
     def __init__(self, s3BucketName, debug=False):
+        self.isoformat = '%Y-%m-%dT%H:%M:%S.%f'
         if debug:
             auth = AuthToken('profile dev')
             self.s3client = AmazonS3Client(auth.getToken())
@@ -17,24 +18,8 @@ class S3Functions:
 
         self.s3BucketName = s3BucketName
         now = datetime.now()
-        self.date = now.date().isoformat()
+        self.date = now.isoformat()
         self.s3path = "Backups/%s" % self.date
-
-    def writeTableData(self, tableData):
-        """
-        Given a python dict object (tableData) this will generate a single json
-        file, and write it to
-        s3://self.s3BucketName/self.s3path/backup-data.json
-        :param tableData: Python dict object with the table data.
-        """
-        data = dumps(tableData)
-        self.writeData(data, 'application/json',
-                       'backup-data.json', None,
-                       dynamodbbackup=self.date)
-
-    def writeHiveData(self, hivescript):
-        self.writeData(hivescript, 'application/x-hive',
-                       'dynamodb-backup.hive', 'HiveScripts')
 
     def writeData(self, data, datatype, filename, s3key=None, **kwargs):
         """
@@ -62,18 +47,6 @@ class S3Functions:
             print e.args
             print e.message
 
-    def readTableData(self):
-        data = None
-        try:
-            MyClass = Conversions()
-            jsonFile = "%s/backup-data.json" % self.s3path
-            istr = self.s3client.getObject(self.s3BucketName, jsonFile).getObjectContent()
-            data = loads(MyClass.convertStreamToString(istr))
-            # Data is now a python dict.
-        except AmazonS3Exception,ae:
-            data = ae.getAdditionalDetails()
-            print ae.toString()
-        except Exception,e:
-            print e.message
-
-        return data
+    def writeHiveData(self, hivescript):
+        self.writeData(hivescript, 'application/x-hive',
+                       'dynamodb-backup.hive', 'HiveScripts')

@@ -5,6 +5,7 @@ from com.amazonaws.services.dynamodbv2 import AmazonDynamoDBClient
 from com.amazonaws.services.dynamodbv2.model import DescribeTableRequest
 from com.amazonaws.services.dynamodbv2.model import ProvisionedThroughput
 from re import match
+from math import ceil
 
 class DynamoDbFunctions:
     def __init__(self, pattern, table=None, debug=False):
@@ -65,69 +66,10 @@ class DynamoDbFunctions:
 
     def getTableList(self):
         """
-        Generates a list of table names from the TableDescrion objects.
+        Generates a list of table names from the TableDescription objects.
         :return: python list of table names.
         """
         rtn = []
         for table in self.tableDescriptions:
             rtn.append(table.tableName)
         return rtn
-
-    def descFromName(self, tableName):
-        """
-        Returns the java TableDescription object associated with the given
-        tableName.
-        :param tableName: String containing the name of the table to get the
-                          description for.
-        :return: java com.amazonaws.services.dynamodbv2.model.TableDescription
-                 object
-        """
-        rtn = None
-        for x in self.tableDescriptions:
-            if x.tableName == tableName:
-                rtn = x
-        return rtn
-
-    def setReadThroughput(self, tableDesc, throughput):
-        """
-        Sets the specified throughput capacity for the specified table.
-        :param tableDesc: com.amazonaws.services.dynamodbv2.model.TableDescription Object
-        :param throughput: A simple long with the numher of read units per second to change to.
-        :return: void
-        """
-        if throughput > 500:
-            print "throughput of reads is set too high: %s" % throughput
-        elif throughput < 1:
-            print "throughput of reads must be at least 1"
-
-        else:
-            try:
-                reads = tableDesc.getProvisionedThroughput().getReadCapacityUnits()
-                writes = tableDesc.getProvisionedThroughput().getWriteCapacityUnits()
-                p = ProvisionedThroughput(throughput, writes)
-                if reads == throughput:
-                    print "The specified reads capacity is already set to %s" % reads
-                else:
-                    self.dynamoDb.updateTable(tableDesc.getTableName(), p)
-            except Exception,e:
-                print e.message
-
-    def printTableData(self, tableDesc):
-        """
-        Prints Table Data, given the Java TableDescription object.
-        :param tableDesc: com.amazonaws.services.dynamodbv2.model.TableDescription Object
-        :return: void
-        """
-        try:
-            print "Table Name: %s" % tableDesc.getTableName()
-            print "Table Read  Throughput: %s" % tableDesc.getProvisionedThroughput().getReadCapacityUnits()
-            print "Table Write Throughput: %s" % tableDesc.getProvisionedThroughput().getWriteCapacityUnits()
-            print "Table Size: %s" % tableDesc.getTableSizeBytes()
-            print tableDesc.getProvisionedThroughput()
-            print ""
-        except Exception,e:
-            print "Exception in printTableData: %s" % e.args
-            print e.message
-
-    def close(self):
-        self.dynamoDb.shutdown()
